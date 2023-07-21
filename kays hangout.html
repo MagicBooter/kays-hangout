@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kay's Hangout - Signup</title>
+  <style>
+    /* Same as before (hacker theme styles) */
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #000;
+      color: #0F0;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #0F0;
+      border-radius: 5px;
+      background-color: #000;
+    }
+
+    .hacker-theme {
+      background-color: #000;
+      color: #0F0;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hacker-theme pre {
+      font-size: 16px;
+      white-space: pre-wrap;
+    }
+
+    .hacker-text {
+      font-size: 24px;
+      text-shadow: 2px 2px #0F0;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #0F0;
+      border-radius: 3px;
+      background-color: #000;
+      color: #0F0;
+    }
+
+    button {
+      background-color: #000;
+      color: #0F0;
+      padding: 10px 20px;
+      border: 1px solid #0F0;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #111;
+    }
+
+    #chatroom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .chatroom-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .user-list {
+      flex: 1;
+      margin-left: 20px;
+      max-width: 200px;
+    }
+
+    .user-list h3 {
+      margin: 0;
+      padding: 5px;
+      background-color: #000;
+      color: #0F0;
+    }
+
+    #userList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #userList li {
+      padding: 5px;
+      border: 1px solid #0F0;
+      border-radius: 3px;
+      background-color: #000;
+      margin-bottom: 5px;
+    }
+
+    .chat-box {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1px solid #0F0;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #000;
+    }
+
+    .chat-message {
+      text-align: left;
+    }
+
+    #chatMessages {
+      height: 300px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #000;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      width: 100%;
+    }
+
+    #chatForm {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    #messageInput {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #0F0;
+      border-radius: 3px;
+      background-color: #000;
+      color: #0F0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container hacker-theme" id="signupContainer">
+    <pre>
+      ____  ____  __  __ _   _ ____  _______     _______ ____  _   _ ____  _____
+     |  _ \|  _ \|  \/  | | | | __ )| ____\ \   / / ____/ ___|| | | | __ )| ____|
+     | | | | | | | |\/| | | | |  _ \|  _|  \ \ / /|  _| \___ \| | | |  _ \|  _|
+     | |_| | |_| | |  | | |_| | |_) | |___  \ V / | |___ ___) | |_| | |_) | |___
+     |____/|____/|_|  |_|\___/|____/|_____|  \_/  |_____|____/ \___/|____/|_____|
+    </pre>
+    <form id="signupForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Join the Hangout</button>
+    </form>
+  </div>
+
+  <div class="container hacker-theme" style="display: none;" id="chatroom">
+    <h2>Welcome to Kay's Hangout, <span id="loggedInUsername"></span>!</h2>
+    <div class="chatroom-container">
+      <div class="chat-box">
+        <div id="chatMessages"></div>
+        <form id="chatForm">
+          <input type="text" id="messageInput" placeholder="Type your message..." required>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+      <div class="user-list">
+        <h3>User List</h3>
+        <ul id="userList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Store the username after successful signup
+    let username = null;
+
+    // Simulated array of real users connected on the site
+    let connectedUsers = [];
+
+    // Code for the signup form submission
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // You should implement the backend signup logic here
+      // For this example, let's assume successful signup and redirect to the chatroom
+      // In a real-world scenario, use a proper user registration mechanism.
+      if (username && password) {
+        document.getElementById("loggedInUsername").innerText = username;
+        document.getElementById("signupContainer").style.display = "none";
+        document.getElementById("chatroom").style.display = "block";
+
+        // Simulate a new user connected to the site
+        connectedUsers.push(username);
+        updateUserList();
+      }
+    });
+
+    // Code for the chat form submission
+    document.getElementById("chatForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const message = document.getElementById("messageInput").value;
+
+      // Add code to send the message to the server and handle the chat logic here
+      // For this example, let's assume we add the message to the chatMessages div
+      const chatMessages = document.getElementById("chatMessages");
+      chatMessages.innerHTML += `<p data-username="${username}" class="chat-message"><strong>${username}:</strong> ${message}</p>`;
+      document.getElementById("messageInput").value = "";
+
+      // Scroll to the bottom of the chat
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+
+    // Update the user list
+    function updateUserList() {
+      const userList = document.getElementById("userList");
+      userList.innerHTML = '';
+      connectedUsers.forEach(user => {
+        userList.innerHTML += `<li>${user}</li>`;
+      });
+    }
+  </script>
+</body>
+</html>
